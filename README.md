@@ -1,4 +1,4 @@
-#easyPokerHUD
+# easyPokerHUD
 
 easyPokerHUD is a free and open-source poker HUD for PokerStars and 888 Poker. It is build with C# and SQLite. The code is released under the GPLv3-license.
 
@@ -34,10 +34,9 @@ The main.cs file instantiates a new directory watcher to monitor the directory w
 #### Hand.cs
 This class represents a hand for that specific poker room. It gets the path to the hand as input and outputs an object of type hand. This can then be used by the overlay. This class must inherit the class "PokerRoomHand.cs" which can be found in the "Inheritance" folder. It sports a few different methods which are handy to process the .txt containing the played hand.
 
+
 #### Overlay.cs
-Coming soon
-
-
+Overlay.cs inherits low level functions needed for the overlay. The only thing to implement is a method for differentiating the different player counts and positioning the stats windows for each player accordingly. The current implementation uses hardcoded positions. A solution for a dynamic positioning would be highly appreciated.
 
 ## Authors
 
