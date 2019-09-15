@@ -15,14 +15,20 @@ namespace easyPokerHUD
         public static ConcurrentDictionary<string, string> overlays = new ConcurrentDictionary<string, string>();
         public static ConcurrentDictionary<string, EightPokerHand> newHandsToBeFetched = new ConcurrentDictionary<string, EightPokerHand>();
 
-        //Activates the Filewatcher
+        /// <summary>
+        /// Activates the Filewatcher
+        /// </summary>
         public static void activateFileWatcher()
         {
             handHistoryWatcher = new HandHistoryWatcher(System.Environment.SpecialFolder.MyDocuments, "888poker", "HandHistory");
             handHistoryWatcher.Changed += getInformationAndPassItToHUD;
         }
 
-        //Creates a hand, fills it with the information about players and finally passes it on to the hud
+        /// <summary>
+        /// Creates a hand, fills it with the information about players and finally passes it on to the hud
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         public static void getInformationAndPassItToHUD(object source, FileSystemEventArgs e)
         {
             //888 Poker stores summary txts, that should be ignored
@@ -40,7 +46,10 @@ namespace easyPokerHUD
             }
         }
 
-        //Creates a new overlay or stores the information in a list to be fetched by the overlay timer
+        /// <summary>
+        /// Creates a new overlay or stores the information in a list to be fetched by the overlay timer
+        /// </summary>
+        /// <param name="hand"></param>
         private static void createNewOverlayOrStoreInformation(EightPokerHand hand)
         {
             if (overlays.ContainsKey(hand.tableName))
@@ -55,39 +64,51 @@ namespace easyPokerHUD
             }
         }
 
-        //Gets the stats stored in the database
+        /// <summary>
+        /// Gets the stats stored in the database
+        /// </summary>
+        /// <param name="players"></param>
         protected static void combineDataSets(List<Player> players)
         {
             foreach (Player player in players)
             {
                 try
                 {
-                    Player playerStoredInCache = playerCache.Where(p => p.name.Equals(player.name)).Single();
-                    player.handsPlayed = player.handsPlayed + playerStoredInCache.handsPlayed;
-                    player.preflopCalls = player.preflopCalls + playerStoredInCache.preflopCalls;
-                    player.preflopBetsAndRaises = player.preflopBetsAndRaises + playerStoredInCache.preflopBetsAndRaises;
-                    player.postflopBetsAndRaises = player.postflopBetsAndRaises + playerStoredInCache.postflopBetsAndRaises;
-                    player.postflopCallsChecksAndFolds = player.postflopCallsChecksAndFolds + playerStoredInCache.postflopCallsChecksAndFolds;
+                    Player playerStoredInCache = playerCache.Single(p => p.name.Equals(player.name));
+                    player.handsPlayed += playerStoredInCache.handsPlayed;
+                    player.preflopCalls += playerStoredInCache.preflopCalls;
+                    player.preflopBetsAndRaises += playerStoredInCache.preflopBetsAndRaises;
+                    player.postflopBetsAndRaises += playerStoredInCache.postflopBetsAndRaises;
+                    player.postflopCallsChecksAndFolds += playerStoredInCache.postflopCallsChecksAndFolds;
                     playerCache[playerCache.IndexOf(playerStoredInCache)] = player;
                 }
                 catch
                 {
-                    player.combinethisPlayerWithStoredStats();
+                    player.CombinethisPlayerWithStoredStats();
                     playerCache.Add(player);
                 }
             }
         }
 
-        //Updates the players in the database
-        public static void updatePlayersInDatabaseFromCache()
+        /// <summary>
+        /// Updates the players in the database
+        /// </summary>
+        public static void UpdatePlayersInDatabaseFromCache()
         {
             foreach (Player player in playerCache)
             {
-                player.updateOrCreatePlayerInDatabase();
+                player.UpdateOrCreatePlayerInDatabase();
             }
         }
 
-        //Checks whether this hand is eligible to be hudded 
+        /// <summary>
+        /// Checks whether this hand is eligible to be hudded 
+        /// </summary>
+        /// <param name="tableSize"></param>
+        /// <param name="handInformation"></param>
+        /// <param name="players"></param>
+        /// <param name="playerName"></param>
+        /// <returns></returns>
         protected static bool checkIfHandIsValidForHUD(int tableSize, string handInformation, List<Player> players, string playerName)
         {
             //If the player is sitting out, the playerName will return empty
