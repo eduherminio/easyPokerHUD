@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 
@@ -50,8 +51,7 @@ namespace easyPokerHUD
         /// <param name="eve"></param>
         protected void UpdatePlayerStatsIfNewHandExists(object obj, EventArgs eve)
         {
-            PokerStarsHand hand;
-            if (PokerStarsMain.newHandsToBeFetched.TryRemove(tableName, out hand))
+            if (PokerStarsMain.newHandsToBeFetched.TryRemove(tableName, out PokerStarsHand hand))
             {
                 hand.players = PreparePlayerListForCorrectPositioning(hand.players);
                 PopulateStatsWindows(hand.players);
@@ -63,21 +63,17 @@ namespace easyPokerHUD
         /// </summary>
         protected void SetPositionOfStatsWindowsWindowsAccordingToTableSize()
         {
-            if (tableSize == 2)
+            Dictionary<int, Action> positionControls = new Dictionary<int, Action>()
             {
-                PositionControlsHeadsUp();
-            }
-            else if (tableSize == 3)
+                [2] = PositionControlsHeadsUp,
+                [3] = PositionControls3Max,
+                [6] = PositionControls6Max,
+                [9] = PositionControls9Max
+            };
+
+            if (positionControls.TryGetValue(tableSize, out Action action))
             {
-                PositionControls3Max();
-            }
-            else if (tableSize == 6)
-            {
-                PositionControls6Max();
-            }
-            else if (tableSize == 9)
-            {
-                PositionControls9Max();
+                action.Invoke();
             }
         }
 

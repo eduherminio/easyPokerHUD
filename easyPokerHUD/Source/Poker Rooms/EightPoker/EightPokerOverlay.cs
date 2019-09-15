@@ -67,26 +67,20 @@ namespace easyPokerHUD
         /// <returns></returns>
         protected new List<Player> PreparePlayerListForCorrectPositioning(List<Player> players)
         {
-            if (tableSize == 2)
+            Dictionary<int, Func<List<Player>, List<Player>>> positionControls = new Dictionary<int, Func<List<Player>, List<Player>>>()
             {
-                return PreparePlayerListForHeadsUp(players);
-            }
-            else if (tableSize == 4)
+                [2] = PreparePlayerListForHeadsUp,
+                [4] = PreparePlayerListFor4Max,
+                [6] = PreparePlayerListFor6Max,
+                [9] = PreparePlayerListFor9Max,
+                [10] = PreparePlayerListFor10Max
+            };
+
+            if (positionControls.TryGetValue(tableSize, out Func<List<Player>, List<Player>> method))
             {
-                return PreparePlayerListFor4Max(players);
+                method.Invoke(players);
             }
-            else if (tableSize == 6)
-            {
-                return PreparePlayerListFor6Max(players);
-            }
-            else if (tableSize == 9)
-            {
-                return PreparePlayerListFor9Max(players);
-            }
-            else if (tableSize == 10)
-            {
-                return PreparePlayerListFor10Max(players);
-            }
+
             return players;
         }
 
@@ -195,25 +189,18 @@ namespace easyPokerHUD
         /// </summary>
         private void SetPositionOfStatsWindowsWindowsAccordingToTableSize()
         {
-            if (tableSize == 2)
+            Dictionary<int, Action> positionControls = new Dictionary<int, Action>()
             {
-                PositionControlsHeadsUp();
-            }
-            else if (tableSize == 4)
+                [2] = PositionControlsHeadsUp,
+                [4] = PositionControls4Max,
+                [6] = PositionControls6Max,
+                [9] = PositionControls9Max,
+                [10] = PositionControls10Max
+            };
+
+            if (positionControls.TryGetValue(tableSize, out Action action))
             {
-                PositionControls4Max();
-            }
-            else if (tableSize == 6)
-            {
-                PositionControls6Max();
-            }
-            else if (tableSize == 9)
-            {
-                PositionControls9Max();
-            }
-            else if (tableSize == 10)
-            {
-                PositionControls10Max();
+                action.Invoke();
             }
         }
 
