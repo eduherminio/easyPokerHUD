@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace easyPokerHUD
 {
-    public partial class EightPokerOverlay : PokerRoomOverlay
+    internal partial class EightPokerOverlay : PokerRoomOverlay
     {
         public EightPokerOverlay(EightPokerHand hand)
         {
@@ -15,8 +15,8 @@ namespace easyPokerHUD
             PrepareOverlay(hand.tableName, hand.tableSize, hand.playerName);
 
             //Add an event to the timers
-            statsFetcherTimer.Tick += new EventHandler(UpdatePlayerStatsIfNewHandExists);
-            controlSizeUpdateTimer.Tick += new EventHandler(UpdateControlSizeOrCloseOverlay);
+            statsFetcherTimer.Tick += UpdatePlayerStatsIfNewHandExists;
+            controlSizeUpdateTimer.Tick += UpdateControlSizeOrCloseOverlay;
 
             //Set the size for all controls
             SetPositionOfStatsWindowsWindowsAccordingToTableSize();
@@ -52,8 +52,7 @@ namespace easyPokerHUD
         /// <param name="eve"></param>
         protected void UpdatePlayerStatsIfNewHandExists(object obj, EventArgs eve)
         {
-            EightPokerHand hand;
-            if (EightPokerMain.newHandsToBeFetched.TryRemove(tableName, out hand))
+            if (EightPokerMain.newHandsToBeFetched.TryRemove(tableName, out EightPokerHand hand))
             {
                 hand.players = PreparePlayerListForCorrectPositioning(hand.players);
                 PopulateStatsWindows(hand.players);

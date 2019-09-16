@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace easyPokerHUD
 {
-    public class PokerRoomOverlay : OverlayFrame
+    internal class PokerRoomOverlay : OverlayFrame
     {
         protected string playerName;
         protected int tableSize;
@@ -127,7 +127,7 @@ namespace easyPokerHUD
         protected void SetStatsWindowsFontSize()
         {
             float fontSize = Width / 99 / GetScalingFactor();
-            float fontSizeForWindow = Width / 120;
+            float fontSizeForWindow = (float)Width / 120;
             foreach (StatsWindow statsWindow in statsWindowList)
             {
                 statsWindow.Font = new Font("Arial", fontSizeForWindow);

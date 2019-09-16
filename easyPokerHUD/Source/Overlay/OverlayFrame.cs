@@ -7,7 +7,7 @@ using Win32Interop.WinHandles;
 
 namespace easyPokerHUD
 {
-    public class OverlayFrame : Form
+    internal class OverlayFrame : Form
     {
         protected RECT rect;
         protected RECT oldrect = new RECT();
@@ -45,7 +45,7 @@ namespace easyPokerHUD
         protected void StartOverlayFrameUpdateTimer()
         {
             overlayFrameUpdateTimer.Interval = 250;
-            overlayFrameUpdateTimer.Tick += new EventHandler(UpdateOverlayFrame);
+            overlayFrameUpdateTimer.Tick += UpdateOverlayFrame;
             overlayFrameUpdateTimer.Enabled = true;
         }
 

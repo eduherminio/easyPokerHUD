@@ -44,8 +44,8 @@ namespace easyPokerHUD
             while (IsFileLocked(file))
             {
             }
-            var hand = File.ReadLines(path).Reverse().SkipWhile(s => !s.Contains(skipKeyword)).TakeWhile(s => s != takeKeyword).Reverse();
-            return hand.ToArray();
+            var extractedHand = File.ReadLines(path).Reverse().SkipWhile(s => !s.Contains(skipKeyword)).TakeWhile(s => s != takeKeyword).Reverse();
+            return extractedHand.ToArray();
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace easyPokerHUD
             InitializeComponent();
 
             //Set the version number label to the current version
-            versionNumberLabel.Text = "v " + ApplicationUpdater.GetCurrentProductVersion();
+            versionNumberLabel.Text = $"v {ApplicationUpdater.GetCurrentProductVersion()}";
 
             //Start the filewatchers
             MainMethods.ActivateFileWatchers();

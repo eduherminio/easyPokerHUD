@@ -35,16 +35,18 @@ namespace easyPokerHUD
         private void PopulateLabels(Player player)
         {
             //Set VPIP, PFR, AFq and handsPlayed
-            VPIP.Text = player.CalculateVPIP().ToString();
-            PFR.Text = player.CalculatePFR().ToString();
-            AFq.Text = player.CalculateAFq().ToString();
+            int vpip = player.CalculateVPIP();
+            int pfr = player.CalculatePFR();
+            int afq = player.CalculateAFq();
+
             handsplayed.Text = GetNumberOfHandsPlayedString(player.handsPlayed);
+            VPIP.Text = vpip.ToString();
+            AFq.Text = afq.ToString();
 
             //In case pfr is higher than vpip, vpip will be shown instead of pfr
-            if (player.CalculatePFR() > player.CalculateVPIP())
-            {
-                PFR.Text = player.CalculateVPIP().ToString();
-            }
+            PFR.Text = pfr > vpip
+                ? vpip.ToString()
+                : pfr.ToString();
         }
 
         /// <summary>
@@ -54,13 +56,13 @@ namespace easyPokerHUD
         /// <returns></returns>
         private string GetNumberOfHandsPlayedString(int numberOfHandsPlayed)
         {
-            if (numberOfHandsPlayed >= 1000 && numberOfHandsPlayed < 1000000)
+            if (numberOfHandsPlayed >= 1000 && numberOfHandsPlayed < 1_000_000)
             {
-                return (numberOfHandsPlayed / 1000).ToString() + "k";
+                return ((float)numberOfHandsPlayed / 1000).ToString("N1") + "k";
             }
-            else if (numberOfHandsPlayed >= 1000000)
+            else if (numberOfHandsPlayed >= 1_000_000)
             {
-                return (numberOfHandsPlayed / 1000000).ToString() + "k";
+                return ((float)numberOfHandsPlayed / 1_000_000).ToString("N1") + "m";
             }
             else
             {

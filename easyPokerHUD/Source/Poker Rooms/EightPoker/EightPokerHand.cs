@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -26,14 +25,14 @@ namespace easyPokerHUD
             postflop = hand.SkipWhile(s => !s.Contains("Dealing flop")).TakeWhile(s => !s.Contains("Summary")).ToArray();
 
             //Get the table name and table size from the tableinformation string
-            tableName = getTableName(tableInformation);
-            tableSize = getTableSize(tableInformation);
+            tableName = GetTableName(tableInformation);
+            tableSize = GetTableSize(tableInformation);
 
             //Get the players with stats playing in this hand
-            players = getPlayersWithStats(playerOverview, preflop, postflop, pokerRoom);
+            players = GetPlayersWithStats(playerOverview, preflop, postflop, pokerRoom);
 
             //Get the player name of this hand
-            playerName = getPlayerName(hand);
+            playerName = GetPlayerName(hand);
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace easyPokerHUD
         /// </summary>
         /// <param name="tableInformation"></param>
         /// <returns></returns>
-        protected string getTableName(string tableInformation)
+        protected string GetTableName(string tableInformation)
         {
             string tableName = tableInformation.Substring(tableInformation.IndexOf(" ") + 1);
             tableName = tableName.Substring(0, tableName.IndexOf(" "));
@@ -53,12 +52,12 @@ namespace easyPokerHUD
         /// </summary>
         /// <param name="tableInformation"></param>
         /// <returns></returns>
-        protected int getTableSize(string tableInformation)
+        protected int GetTableSize(string tableInformation)
         {
             string stringThatContainsTableSize = tableInformation;
             if (tableInformation.Contains("Tournament"))
             {
-                stringThatContainsTableSize = tableInformation.Substring(tableInformation.IndexOf("Max")-3);
+                stringThatContainsTableSize = tableInformation.Substring(tableInformation.IndexOf("Max") - 3);
                 stringThatContainsTableSize = Regex.Match(stringThatContainsTableSize, @"\d+").Value;
             }
             else
@@ -74,7 +73,7 @@ namespace easyPokerHUD
         /// </summary>
         /// <param name="hand"></param>
         /// <returns></returns>
-        protected string getPlayerName(string[] hand)
+        protected string GetPlayerName(string[] hand)
         {
             foreach (string line in hand)
             {
@@ -100,7 +99,7 @@ namespace easyPokerHUD
         /// <param name="postflop"></param>
         /// <param name="pokerRoom"></param>
         /// <returns></returns>
-        public static List<Player> getPlayersWithStats(string[] playerOverview, string[] preflop, string[] postflop,
+        public static List<Player> GetPlayersWithStats(string[] playerOverview, string[] preflop, string[] postflop,
              string pokerRoom)
         {
             //Create a list for all the players
@@ -109,10 +108,12 @@ namespace easyPokerHUD
             //Go through the player overview and extract seat as well as name
             foreach (string line in playerOverview)
             {
-                Player player = new Player(getName(line));
-                player.seat = getSeatNumber(line);
-                player.pokerRoom = pokerRoom;
-                player.handsPlayed = 1;
+                Player player = new Player(GetName(line))
+                {
+                    seat = GetSeatNumber(line),
+                    pokerRoom = pokerRoom,
+                    handsPlayed = 1
+                };
                 players.Add(player);
             }
 
@@ -122,11 +123,11 @@ namespace easyPokerHUD
         }
 
         /// <summary>
-        /// Extracts the name out of a given line 
+        /// Extracts the name out of a given line
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        protected static string getName(string line)
+        protected static string GetName(string line)
         {
             string name = line.Substring(line.IndexOf(":") + 2);
             name = name.Substring(0, name.IndexOf("(") - 1);
@@ -138,7 +139,7 @@ namespace easyPokerHUD
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        protected static int getSeatNumber(string line)
+        protected static int GetSeatNumber(string line)
         {
             string resultString = Regex.Match(line, @"\d+").Value;
             int seatNumber = int.Parse(resultString);

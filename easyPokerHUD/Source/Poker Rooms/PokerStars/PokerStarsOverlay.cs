@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace easyPokerHUD
 {
-    public partial class PokerStarsOverlay : PokerRoomOverlay
+    internal partial class PokerStarsOverlay : PokerRoomOverlay
     {
         public PokerStarsOverlay(PokerStarsHand hand)
         {
@@ -15,8 +15,8 @@ namespace easyPokerHUD
             PrepareOverlay(hand.tableName, hand.tableSize, hand.playerName);
 
             //Add an event to the timers
-            statsFetcherTimer.Tick += new EventHandler(UpdatePlayerStatsIfNewHandExists);
-            controlSizeUpdateTimer.Tick += new EventHandler(UpdateControlSizeOrCloseOverlay);
+            statsFetcherTimer.Tick += UpdatePlayerStatsIfNewHandExists;
+            controlSizeUpdateTimer.Tick += UpdateControlSizeOrCloseOverlay;
 
             //Set the size for all controls
             SetPositionOfStatsWindowsWindowsAccordingToTableSize();
@@ -130,9 +130,6 @@ namespace easyPokerHUD
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PokerStarsOverlay_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void PokerStarsOverlay_Load(object sender, EventArgs e) { }
     }
 }
