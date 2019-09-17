@@ -6,9 +6,7 @@ namespace easyPokerHUD
 {
     public class PokerRoomHand
     {
-        /// <summary>
-        /// Properties of this hand
-        /// </summary>
+        // Properties of this hand
         public string path;
         public string pokerRoom;
         public string tableName;
@@ -16,9 +14,7 @@ namespace easyPokerHUD
         public int tableSize;
         public bool tournament;
 
-        /// <summary>
-        /// Parts of this hand
-        /// </summary>
+        // Parts of this hand
         public string[] hand;
         public string handInformation;
         public string tableInformation;

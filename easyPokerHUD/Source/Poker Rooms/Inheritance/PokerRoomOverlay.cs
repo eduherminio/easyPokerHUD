@@ -28,9 +28,7 @@ namespace easyPokerHUD
         protected StatsWindow statsWindow10 = new StatsWindow();
         protected StatsWindow tableStatsWindow = new StatsWindow();
 
-        /// <summary>
-        /// These are needed for the table overview
-        /// </summary>
+        // These are needed for the table overview
         protected int handsPlayedOnThisTable;
         protected int tableHandsPlayed;
         protected int tablePreflopCalls;
