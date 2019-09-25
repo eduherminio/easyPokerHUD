@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +19,11 @@ namespace easyPokerHUD
         /// </summary>
         public static void ActivateFileWatcher()
         {
-            handHistoryWatcher = new HandHistoryWatcher(System.Environment.SpecialFolder.LocalApplicationData, "PokerStars", "HandHistory");
+            handHistoryWatcher = new HandHistoryWatcher(
+                System.Environment.SpecialFolder.LocalApplicationData,
+                Properties.Settings.Default.PokerStarsFolder,
+                Properties.Settings.Default.PokerStarsHandFolder);
+
             handHistoryWatcher.Changed += GetInformationAndPassItToHUD;
         }
 

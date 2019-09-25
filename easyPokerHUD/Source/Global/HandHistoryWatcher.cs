@@ -8,8 +8,8 @@ namespace easyPokerHUD
     public class HandHistoryWatcher : FileSystemWatcher
     {
         private Timer _directorySearcher;
-        public string pMessage = "";
-        public string nMessage = "";
+        public string pMessage = string.Empty;
+        public string nMessage = string.Empty;
 
         private readonly Environment.SpecialFolder _windowsEnvironmentFolder;
         private readonly string _pokerRoom;
@@ -86,23 +86,26 @@ namespace easyPokerHUD
             {
                 //Start in the user folder, where the poker room stores the hand history and move on from there
                 var startingDirectory = new DirectoryInfo(@Environment.GetFolderPath(_windowsEnvironmentFolder));
-                var possibleDirectories = startingDirectory.GetDirectories().Where(s => s.ToString().Contains(_pokerRoom)).OrderByDescending(f => f.LastWriteTime);
+                var possibleDirectories = startingDirectory.GetDirectories()
+                    .Where(s => s.Name.IndexOf(_pokerRoom, StringComparison.InvariantCultureIgnoreCase) != -1)
+                    .OrderByDescending(f => f.LastWriteTime);
 
                 //Take the list of possible directories and return the most recent one, that contains the hand history folder
                 foreach (DirectoryInfo possibleDirectory in possibleDirectories)
                 {
-                    try
+                    var probableDirectory = possibleDirectory.GetDirectories()
+                        .SingleOrDefault(s => s.Name.IndexOf(_handHistoryFolder, StringComparison.InvariantCultureIgnoreCase) != -1);
+
+                    if (probableDirectory != null)
                     {
-                        var probableDirectory = possibleDirectory.GetDirectories().Single(s => s.ToString().Contains(_handHistoryFolder));
                         return probableDirectory.FullName;
                     }
-                    catch { /*Do nothing when no such directory is found */}
                 }
-                return "";
+                return string.Empty;
             }
             catch
             {
-                return "";
+                return string.Empty;
             }
         }
 
