@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,11 +15,11 @@ namespace easyPokerHUD
         /// </summary>
         public static void ActivateFileWatchers()
         {
-            if (CheckIfPokerRoomIsInstalled("PokerStars"))
+            if (CheckIfPokerRoomIsInstalled(Properties.Settings.Default.PokerStarsAppName))
             {
                 PokerStarsMain.ActivateFileWatcher();
             }
-            if (CheckIfPokerRoomIsInstalled("888poker"))
+            if (CheckIfPokerRoomIsInstalled(Properties.Settings.Default.EEEPokerAppName))
             {
                 EightPokerMain.ActivateFileWatcher();
             }
@@ -42,7 +42,7 @@ namespace easyPokerHUD
                         try
                         {
                             string name = (string)subkey.GetValue("DisplayName");
-                            if (name.Contains(pokerRoom))
+                            if (name.IndexOf(pokerRoom, StringComparison.InvariantCultureIgnoreCase) >= 0)
                             {
                                 return true;
                             }

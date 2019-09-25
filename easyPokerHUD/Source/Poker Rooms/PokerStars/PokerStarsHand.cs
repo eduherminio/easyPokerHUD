@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -41,8 +42,11 @@ namespace easyPokerHUD
         /// <returns></returns>
         protected string GetTableName(string tableInformation)
         {
-            string tableName = tableInformation.Substring(tableInformation.IndexOf("'") + 1);
-            tableName = tableName.Substring(0, tableName.IndexOf("'"));
+            const string tableIdentifier = "Table ";
+            string tableName = tableInformation.Substring(tableInformation.IndexOf(tableIdentifier) + tableIdentifier.Length + 1);
+            tableName = tableName.IndexOf("'") >= 0
+                ? tableName.Substring(0, tableName.IndexOf("'"))
+                : tableName;
             try
             {
                 if (tableName.Substring(0, tableName.IndexOf(" ") - 1).All(char.IsDigit))
@@ -50,7 +54,7 @@ namespace easyPokerHUD
                     tableName = tableName.Substring(0, tableName.IndexOf(" ") - 1);
                 }
             }
-            catch
+            catch (Exception e)
             {
             }
             return tableName;

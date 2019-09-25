@@ -19,7 +19,11 @@ namespace easyPokerHUD
         /// </summary>
         public static void ActivateFileWatcher()
         {
-            handHistoryWatcher = new HandHistoryWatcher(System.Environment.SpecialFolder.MyDocuments, "888poker", "HandHistory");
+            handHistoryWatcher = new HandHistoryWatcher(
+                System.Environment.SpecialFolder.MyDocuments,
+                Properties.Settings.Default.EEEPokerFolder,
+                Properties.Settings.Default.EEEPokerHandsFolder);
+
             handHistoryWatcher.Changed += GetInformationAndPassItToHUD;
         }
 

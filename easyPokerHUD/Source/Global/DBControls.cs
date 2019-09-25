@@ -6,19 +6,29 @@ namespace easyPokerHUD
 {
     internal static class DBControls
     {
-        public static readonly string dataBasePath = @Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\easyPokerHUD\";
-        public static readonly string dataBasePathWithFile = dataBasePath + "easyPokerHUD.sqlite";
-        public static readonly string connectionInfo = "Data Source=" + dataBasePathWithFile + ";Version=3;";
+        private static readonly string _defaultDatabasePath = @Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\easyPokerHUD\";
+        private const string _defaultDatabaseName = "easyPokerHUD";
+
+        private static readonly string _databasePath = string.IsNullOrWhiteSpace(Properties.Settings.Default.DatabasePath)
+            ? _defaultDatabasePath
+            : Properties.Settings.Default.DatabasePath;
+
+        private static readonly string _databaseName = string.IsNullOrWhiteSpace(Properties.Settings.Default.DatabaseName)
+            ? _defaultDatabaseName
+            : Properties.Settings.Default.DatabaseName;
+
+        private static readonly string _dataBasePathWithFile = $"{_databasePath}{_databaseName}.sqlite";
+        private static readonly string _connectionInfo = $"Data Source={_dataBasePathWithFile};Version=3;";
 
         /// <summary>
         /// Creates the database
         /// </summary>
         public static void CreateDatabase()
         {
-            Directory.CreateDirectory(dataBasePath);
-            if (!File.Exists(dataBasePathWithFile))
+            Directory.CreateDirectory(_databasePath);
+            if (!File.Exists(_dataBasePathWithFile))
             {
-                SQLiteConnection.CreateFile(dataBasePathWithFile);
+                SQLiteConnection.CreateFile(_dataBasePathWithFile);
             }
             CreateTable("PokerStars");
             CreateTable("EightPoker");
@@ -70,8 +80,8 @@ namespace easyPokerHUD
         {
             try
             {
-                string query = "select * from " + player.pokerRoom + " where name = '" + player.name + "'";
-                using (SQLiteConnection connection = new SQLiteConnection(connectionInfo))
+                string query = $"select * from {player.pokerRoom} where name = '{player.name}'";
+                using (SQLiteConnection connection = new SQLiteConnection(_connectionInfo))
                 {
                     connection.Open();
                     using (SQLiteCommand command = new SQLiteCommand(query, connection))
@@ -105,7 +115,7 @@ namespace easyPokerHUD
         {
             try
             {
-                using (SQLiteConnection connection = new SQLiteConnection(connectionInfo))
+                using (SQLiteConnection connection = new SQLiteConnection(_connectionInfo))
                 {
                     using (SQLiteCommand command = new SQLiteCommand(query, connection))
                     {
