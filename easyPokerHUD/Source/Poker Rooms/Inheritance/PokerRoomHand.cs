@@ -6,7 +6,7 @@ namespace easyPokerHUD
 {
     public class PokerRoomHand
     {
-        //Properties of this hand
+        // Properties of this hand
         public string path;
         public string pokerRoom;
         public string tableName;
@@ -14,7 +14,7 @@ namespace easyPokerHUD
         public int tableSize;
         public bool tournament;
 
-        //Parts of this hand
+        // Parts of this hand
         public string[] hand;
         public string handInformation;
         public string tableInformation;
@@ -22,22 +22,34 @@ namespace easyPokerHUD
         public string[] preflop;
         public string[] postflop;
 
-        //The players in this hand
+        /// <summary>
+        /// The players in this hand
+        /// </summary>
         public List<Player> players = new List<Player>();
 
-        //Reads out specified handhistory from the back and returns only the last played hand
-        protected string[] getHand(string path, string skipKeyword, string takeKeyword)
+        /// <summary>
+        /// Reads out specified handhistory from the back and returns only the last played hand
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="skipKeyword"></param>
+        /// <param name="takeKeyword"></param>
+        /// <returns></returns>
+        protected string[] GetHand(string path, string skipKeyword, string takeKeyword)
         {
             FileInfo file = new FileInfo(path);
-            while (isFileLocked(file))
+            while (IsFileLocked(file))
             {
             }
-            var hand = File.ReadLines(path).Reverse().SkipWhile(s => !s.Contains(skipKeyword)).TakeWhile(s => s != takeKeyword).Reverse();
-            return hand.ToArray();
+            var extractedHand = File.ReadLines(path).Reverse().SkipWhile(s => !s.Contains(skipKeyword)).TakeWhile(s => s != takeKeyword).Reverse();
+            return extractedHand.ToArray();
         }
 
-        //Resets the hadActionInPot variable in the whole player list
-        protected static List<Player> resetHadActionInPot(List<Player> players)
+        /// <summary>
+        /// Resets the hadActionInPot variable in the whole player list
+        /// </summary>
+        /// <param name="players"></param>
+        /// <returns></returns>
+        protected static List<Player> ResetHadActionInPot(List<Player> players)
         {
             foreach (Player player in players)
             {
@@ -46,49 +58,67 @@ namespace easyPokerHUD
             return players;
         }
 
-        //Inserts the preflop stats into the player list
-        protected static List<Player> insertPreFlopStats(string[] preFlop, List<Player> players,
+        /// <summary>
+        /// Inserts the preflop stats into the player list
+        /// </summary>
+        /// <param name="preFlop"></param>
+        /// <param name="players"></param>
+        /// <param name="wordForCall"></param>
+        /// <param name="wordForRaise"></param>
+        /// <param name="wordForBet"></param>
+        /// <returns></returns>
+        protected static List<Player> InsertPreFlopStats(string[] preFlop, List<Player> players,
             string wordForCall, string wordForRaise, string wordForBet)
         {
             foreach (string line in preFlop)
             {
                 foreach (Player player in players)
                 {
-                    if (line.Contains(player.name) && player.hadActionInPot == false)
+                    if (line.Contains(player.name) && !player.hadActionInPot)
                     {
                         if (line.Contains(wordForCall))
                         {
-                            player.preflopCalls = player.preflopCalls + 1;
+                            player.preflopCalls++;
                             player.hadActionInPot = true;
                         }
                         else if (line.Contains(wordForBet) || line.Contains(wordForRaise))
                         {
-                            player.preflopBetsAndRaises = player.preflopBetsAndRaises + 1;
+                            player.preflopBetsAndRaises++;
                             player.hadActionInPot = true;
                         }
                     }
                 }
             }
-            return resetHadActionInPot(players);
+            return ResetHadActionInPot(players);
         }
 
-        //Inserts the postflop stats into the player list
-        protected static List<Player> insertPostFlopStats(string[] postflop, List<Player> players,
+        /// <summary>
+        /// Inserts the postflop stats into the player list
+        /// </summary>
+        /// <param name="postflop"></param>
+        /// <param name="players"></param>
+        /// <param name="wordForCall"></param>
+        /// <param name="wordForRaise"></param>
+        /// <param name="wordForBet"></param>
+        /// <param name="wordForCheck"></param>
+        /// <param name="wordForFold"></param>
+        /// <returns></returns>
+        protected static List<Player> InsertPostFlopStats(string[] postflop, List<Player> players,
             string wordForCall, string wordForRaise, string wordForBet, string wordForCheck, string wordForFold)
         {
             foreach (string line in postflop)
             {
                 foreach (Player player in players)
                 {
-                    if (line.Contains(player.name) && player.hadActionInPot == false)
+                    if (line.Contains(player.name) && !player.hadActionInPot)
                     {
                         if (line.Contains(wordForCall) || line.Contains(wordForCheck) || line.Contains(wordForFold))
                         {
-                            player.postflopCallsChecksAndFolds = player.postflopCallsChecksAndFolds + 1;
+                            player.postflopCallsChecksAndFolds++;
                         }
                         else if (line.Contains(wordForBet) || line.Contains(wordForRaise))
                         {
-                            player.postflopBetsAndRaises = player.postflopBetsAndRaises + 1;
+                            player.postflopBetsAndRaises++;
                         }
                     }
                 }
@@ -96,8 +126,12 @@ namespace easyPokerHUD
             return players;
         }
 
-        //Checks if a file is still used by another process. Needs to be used with a while loop
-        public bool isFileLocked(FileInfo file)
+        /// <summary>
+        /// Checks if a file is still used by another process. Needs to be used with a while loop
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public bool IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
             try
@@ -110,8 +144,7 @@ namespace easyPokerHUD
             }
             finally
             {
-                if (stream != null)
-                    stream.Close();
+                stream?.Close();
             }
             return false;
         }
