@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="PokerStarsAppName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PokerStars</Value>
+      <Value Profile="(Default)">PokerStars.uk</Value>
     </Setting>
     <Setting Name="EEEPokerAppName" Type="System.String" Scope="User">
       <Value Profile="(Default)">888poker</Value>
     </Setting>
     <Setting Name="PokerStarsFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PokerStars</Value>
+      <Value Profile="(Default)">PokerStars.UK</Value>
     </Setting>
     <Setting Name="EEEPokerFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">888poker</Value>
@@ -19,6 +19,12 @@
     </Setting>
     <Setting Name="EEEPokerHandsFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">HandHistory</Value>
+    </Setting>
+    <Setting Name="DatabasePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DatabaseName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

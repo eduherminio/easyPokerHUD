@@ -25,7 +25,7 @@ namespace easyPokerHUD.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PokerStars")]
+        [global::System.Configuration.DefaultSettingValueAttribute("PokerStars.uk")]
         public string PokerStarsAppName {
             get {
                 return ((string)(this["PokerStarsAppName"]));
@@ -49,7 +49,7 @@ namespace easyPokerHUD.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PokerStars")]
+        [global::System.Configuration.DefaultSettingValueAttribute("PokerStars.UK")]
         public string PokerStarsFolder {
             get {
                 return ((string)(this["PokerStarsFolder"]));
@@ -92,6 +92,30 @@ namespace easyPokerHUD.Properties {
             }
             set {
                 this["EEEPokerHandsFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DatabasePath {
+            get {
+                return ((string)(this["DatabasePath"]));
+            }
+            set {
+                this["DatabasePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DatabaseName {
+            get {
+                return ((string)(this["DatabaseName"]));
+            }
+            set {
+                this["DatabaseName"] = value;
             }
         }
     }
