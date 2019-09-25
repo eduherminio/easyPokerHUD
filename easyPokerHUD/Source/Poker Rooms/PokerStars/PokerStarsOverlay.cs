@@ -28,7 +28,7 @@ namespace easyPokerHUD
         /// <param name="eve"></param>
         public void UpdateControlSizeOrCloseOverlay(object obj, EventArgs eve)
         {
-            if (GetTableWindowName() == "")
+            if (string.IsNullOrEmpty(GetTableWindowName()))
             {
                 PokerStarsMain.overlays.TryRemove(tableName, out tableName);
                 Close();

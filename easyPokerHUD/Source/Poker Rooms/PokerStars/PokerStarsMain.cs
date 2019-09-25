@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace easyPokerHUD
     public class PokerStarsMain
     {
         public static HandHistoryWatcher handHistoryWatcher;
-        public static List<Player> playerCache = new List<Player>();
-        public static ConcurrentDictionary<string, string> overlays = new ConcurrentDictionary<string, string>();
-        public static ConcurrentDictionary<string, PokerStarsHand> newHandsToBeFetched = new ConcurrentDictionary<string, PokerStarsHand>();
+        public static readonly List<Player> playerCache = new List<Player>();
+        public static readonly ConcurrentDictionary<string, string> overlays = new ConcurrentDictionary<string, string>();
+        public static readonly ConcurrentDictionary<string, PokerStarsHand> newHandsToBeFetched = new ConcurrentDictionary<string, PokerStarsHand>();
 
         /// <summary>
         /// Activates the Filewatcher
@@ -105,23 +105,17 @@ namespace easyPokerHUD
             {
                 return false;
             }
-            if (tableSize == 2)
+
+            IEnumerable<int> supportedTableSizes = new[]
             {
-                return true;
-            }
-            else if (tableSize == 3)
-            {
-                return true;
-            }
-            else if (tableSize == 6)
-            {
-                return true;
-            }
-            else if (tableSize == 9)
-            {
-                return true;
-            }
-            return false;
+                2,
+                3,
+                // TODO Support 4 players tables
+                6,
+                9
+            };
+
+            return supportedTableSizes.Contains(tableSize);
         }
     }
 }

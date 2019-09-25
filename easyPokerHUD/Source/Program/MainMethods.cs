@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,7 +21,7 @@ namespace easyPokerHUD
             }
             if (CheckIfPokerRoomIsInstalled("888poker"))
             {
-                EightPokerMain.activateFileWatcher();
+                EightPokerMain.ActivateFileWatcher();
             }
         }
 
@@ -97,32 +97,8 @@ namespace easyPokerHUD
             AddMessagesToLists();
 
             //Start with two empty strings and build them into properly formatted positive and negative messages
-            string positiveMessage = "";
-            string negativeMessage = "";
-
-            foreach (string line in _positiveMessages)
-            {
-                if (line != "")
-                {
-                    if (positiveMessage != "")
-                    {
-                        positiveMessage += ", ";
-                    }
-                    positiveMessage += line;
-                }
-            }
-
-            foreach (string line in _negativeMessages)
-            {
-                if (line != "")
-                {
-                    if (negativeMessage != "")
-                    {
-                        negativeMessage += ", ";
-                    }
-                    negativeMessage += line;
-                }
-            }
+            string positiveMessage = string.Join(",", _positiveMessages);
+            string negativeMessage = string.Join(",", _negativeMessages);
 
             //Put both status strings into an array and return it
             string[] statusStrings = new string[2];

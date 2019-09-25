@@ -87,7 +87,7 @@ namespace easyPokerHUD
             {
                 using (var client = new WebClient())
                 {
-                    client.DownloadFile(getDownloadURL(updateInformation), _pathToSaveDownload + @"\easyPokerHUD.exe");
+                    client.DownloadFile(GetDownloadURL(updateInformation), _pathToSaveDownload + @"\easyPokerHUD.exe");
                     Process.Start(_pathToSaveDownload + @"\easyPokerHUD.exe");
                     Environment.Exit(0);
                 }
@@ -104,7 +104,7 @@ namespace easyPokerHUD
         /// </summary>
         /// <param name="updateInformation"></param>
         /// <returns></returns>
-        private static string getDownloadURL(string updateInformation)
+        private static string GetDownloadURL(string updateInformation)
         {
             string downloadURL = updateInformation.Substring(updateInformation.IndexOf("<url>") + 5);
 
