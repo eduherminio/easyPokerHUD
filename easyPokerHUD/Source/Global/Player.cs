@@ -4,10 +4,12 @@ namespace easyPokerHUD
 {
     public class Player
     {
-        //Variables of the Object "Player"
+        /// <summary>
+        /// Variables of the Object "Player"
+        /// </summary>
         public string name;
         public string pokerRoom;
-        public Boolean hadActionInPot;
+        public bool hadActionInPot;
         public int seat;
         public int handsPlayed;
         public int preflopCalls;
@@ -18,20 +20,23 @@ namespace easyPokerHUD
         public Player(string name)
         {
             this.name = name;
-            this.pokerRoom = "";
-            this.hadActionInPot = false;
-            this.seat = 0;
-            this.handsPlayed = 0;
+            pokerRoom = "";
+            hadActionInPot = false;
+            seat = 0;
+            handsPlayed = 0;
             preflopCalls = 0;
             preflopBetsAndRaises = 0;
             postflopBetsAndRaises = 0;
             postflopCallsChecksAndFolds = 0;
         }
 
-        //Calculates and returns the VPIP of a given player
-        public int calculateVPIP()
+        /// <summary>
+        /// Calculates and returns the VPIP of a given player
+        /// </summary>
+        /// <returns></returns>
+        public int CalculateVPIP()
         {
-            if (this.handsPlayed == 0)
+            if (handsPlayed == 0)
             {
                 return 0;
             }
@@ -42,10 +47,13 @@ namespace easyPokerHUD
             }
         }
 
-        //Calculates and returns the PFR of a given player
-        public int calculatePFR()
+        /// <summary>
+        /// Calculates and returns the PFR of a given player
+        /// </summary>
+        /// <returns></returns>
+        public int CalculatePFR()
         {
-            if (this.handsPlayed == 0)
+            if (handsPlayed == 0)
             {
                 return 0;
             }
@@ -56,8 +64,11 @@ namespace easyPokerHUD
             }
         }
 
-        //Calculates and returns the AF of a given player
-        public int calculateAFq()
+        /// <summary>
+        /// Calculates and returns the AF of a given player
+        /// </summary>
+        /// <returns></returns>
+        public int CalculateAFq()
         {
             if (postflopBetsAndRaises + postflopCallsChecksAndFolds == 0)
             {
@@ -65,31 +76,35 @@ namespace easyPokerHUD
             }
             else
             {
-                float AFq = ((float)postflopBetsAndRaises / ((float)postflopBetsAndRaises+(float)postflopCallsChecksAndFolds)) * 100;
+                float AFq = ((float)postflopBetsAndRaises / ((float)postflopBetsAndRaises + (float)postflopCallsChecksAndFolds)) * 100;
                 return Convert.ToInt16(AFq);
             }
         }
 
-        //Combines the current dataset with the dataset in the database
-        public void combinethisPlayerWithStoredStats()
+        /// <summary>
+        /// Combines the current dataset with the dataset in the database
+        /// </summary>
+        public void CombinethisPlayerWithStoredStats()
         {
-            DBControls.combineDataSets(this);
+            DBControls.CombineDataSets(this);
         }
 
-        //Updates or creates this player in the database
-        public void updateOrCreatePlayerInDatabase()
+        /// <summary>
+        /// Updates or creates this player in the database
+        /// </summary>
+        public void UpdateOrCreatePlayerInDatabase()
         {
-            DBControls.insertOrReplacePlayer(this);
+            DBControls.InsertOrReplacePlayer(this);
         }
 
-        public void printStats()
+        public void PrintStats()
         {
-            Console.WriteLine("hp: "+handsPlayed+
-                " preC: "+preflopCalls+
-                " preBR: "+preflopBetsAndRaises+
-                " postBR: "+postflopBetsAndRaises+
-                " postCCF: "+postflopCallsChecksAndFolds+
-                " Name: "+name);
+            Console.WriteLine("hp: " + handsPlayed +
+                " preC: " + preflopCalls +
+                " preBR: " + preflopBetsAndRaises +
+                " postBR: " + postflopBetsAndRaises +
+                " postCCF: " + postflopCallsChecksAndFolds +
+                " Name: " + name);
         }
     }
 }
