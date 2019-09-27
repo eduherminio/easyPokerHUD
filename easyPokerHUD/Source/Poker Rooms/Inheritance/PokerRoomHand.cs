@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace easyPokerHUD
 {
@@ -17,6 +19,7 @@ namespace easyPokerHUD
         // Parts of this hand
         public string[] hand;
         public string handInformation;
+        public int bigBlind;
         public string tableInformation;
         public string[] playerOverview;
         public string[] preflop;
@@ -36,12 +39,28 @@ namespace easyPokerHUD
         /// <returns></returns>
         protected string[] GetHand(string path, string skipKeyword, string takeKeyword)
         {
-            FileInfo file = new FileInfo(path);
-            while (IsFileLocked(file))
+            try
             {
+                FileInfo file = new FileInfo(path);
+                while (isFileLocked(file))
+                {
+                    Console.WriteLine("File not accessable.");
+                    return null;
+                }               
+                var hand = File.ReadLines(path).Reverse().SkipWhile(s => !s.Contains(skipKeyword)).TakeWhile(s => s != takeKeyword).Reverse();
+                if (!string.IsNullOrEmpty(hand.ToString()))
+                {
+                    return hand.ToArray();
+                }
+
+                return null;
+                
             }
-            var extractedHand = File.ReadLines(path).Reverse().SkipWhile(s => !s.Contains(skipKeyword)).TakeWhile(s => s != takeKeyword).Reverse();
-            return extractedHand.ToArray();
+            catch(Exception e)
+            {
+                Console.WriteLine("Error, could not get hand.\n" + e.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -126,12 +145,29 @@ namespace easyPokerHUD
             return players;
         }
 
-        /// <summary>
-        /// Checks if a file is still used by another process. Needs to be used with a while loop
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public bool IsFileLocked(FileInfo file)
+        //Inserts the blinds stats into the player list
+        protected static List<Player> insertChipStats(string[] playerInformation, int bigBlind, List<Player> players,
+            string wordForChips)
+        {
+            foreach (string line in playerInformation)
+            {
+                foreach (Player player in players)
+                {
+                    if (line.Contains(player.name))
+                    {
+                        if (line.Contains(wordForChips))
+                        {
+                            player.chips = System.Int32.Parse(Regex.Match(line, @"(\d+)" + wordForChips).Groups[1].Value);
+                            player.bigBlinds = (double)player.chips / (double)bigBlind;
+                        }
+                    }
+                }
+            }
+            return resetHadActionInPot(players);
+        }
+
+        //Checks if a file is still used by another process. Needs to be used with a while loop
+        public bool isFileLocked(FileInfo file)
         {
             FileStream stream = null;
             try

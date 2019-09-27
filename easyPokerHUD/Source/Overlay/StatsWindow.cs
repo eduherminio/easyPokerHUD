@@ -22,10 +22,11 @@ namespace easyPokerHUD
             PopulateLabels(player);
 
             //handsplayed.Text = player.name + "  "+ player.seat; //This line is for debugging purposes only
-
-            SetAFqColor();
-            SetPFRColor();
-            SetVPIPColor();
+            this.Username.ForeColor = Color.GhostWhite;
+            setAFqColor();
+            setPFRColor();
+            setVPIPColor();
+            setBBColor();
         }
 
         /// <summary>
@@ -34,14 +35,15 @@ namespace easyPokerHUD
         /// <param name="player"></param>
         private void PopulateLabels(Player player)
         {
-            //Set VPIP, PFR, AFq and handsPlayed
-            int vpip = player.CalculateVPIP();
-            int pfr = player.CalculatePFR();
-            int afq = player.CalculateAFq();
+            Username.Text = player.name;// + "(" + getNumberOfHandsPlayedString(player.handsPlayed) + ")";
 
-            handsplayed.Text = GetNumberOfHandsPlayedString(player.handsPlayed);
-            VPIP.Text = vpip.ToString();
-            AFq.Text = afq.ToString();
+            //Set VPIP, PFR, AFq and handsPlayed 
+            VPIP.Text = player.calculateVPIP().ToString();
+            PFR.Text = player.calculatePFR().ToString();
+            AFq.Text = player.calculateAFq().ToString();
+            BB.Text = player.calculateBB().ToString() + " BB";
+            //handsplayed.Text = getNumberOfHandsPlayedString(player.handsPlayed);
+
 
             //In case pfr is higher than vpip, vpip will be shown instead of pfr
             PFR.Text = pfr > vpip
@@ -142,6 +144,47 @@ namespace easyPokerHUD
             {
                 AFq.ForeColor = Color.GhostWhite;
             }
+        }
+
+        //Sets the color of the BB stat
+        private void setBBColor()
+        {
+            string s = BB.Text;
+            var firstWhitespace = s.IndexOf(" ");
+            string bbString = s.Substring(0, firstWhitespace);
+            double bb = Convert.ToDouble(bbString);
+            if (bb > 50)
+            {
+                this.BB.ForeColor = Color.Green;
+            }
+            else if (bb > 30)
+            {
+                this.BB.ForeColor = Color.Orange;
+            }
+            else if (bb > 20)
+            {
+                this.BB.ForeColor = Color.Yellow;
+            }
+            else
+            {
+                this.BB.ForeColor = Color.Red;
+            }
+        }
+
+        private void StatsWindow_SizeChanged(object sender, EventArgs e)
+        {
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+
+            while (Username.Width < System.Windows.Forms.TextRenderer.MeasureText(Username.Text, new Font(Username.Font.FontFamily, Username.Font.Size, Username.Font.Style)).Width)
+            {
+                Username.Font = new Font(Username.Font.FontFamily, Username.Font.Size - 0.5f, Username.Font.Style);
+            }
+
+            while (BB.Width < System.Windows.Forms.TextRenderer.MeasureText(BB.Text, new Font(BB.Font.FontFamily, BB.Font.Size, BB.Font.Style)).Width)
+            {
+                BB.Font = new Font(BB.Font.FontFamily, BB.Font.Size - 0.5f, BB.Font.Style);
+            }
+
         }
     }
 }

@@ -12,6 +12,8 @@ namespace easyPokerHUD
         public bool hadActionInPot;
         public int seat;
         public int handsPlayed;
+        public int chips;
+        public double bigBlinds;
         public int preflopCalls;
         public int preflopBetsAndRaises;
         public int postflopBetsAndRaises;
@@ -20,10 +22,12 @@ namespace easyPokerHUD
         public Player(string name)
         {
             this.name = name;
-            pokerRoom = "";
-            hadActionInPot = false;
-            seat = 0;
-            handsPlayed = 0;
+            this.pokerRoom = "";
+            this.hadActionInPot = false;
+            this.seat = 0;
+            this.handsPlayed = 0;
+            chips = 0;
+            bigBlinds = 0;
             preflopCalls = 0;
             preflopBetsAndRaises = 0;
             postflopBetsAndRaises = 0;
@@ -81,10 +85,13 @@ namespace easyPokerHUD
             }
         }
 
-        /// <summary>
-        /// Combines the current dataset with the dataset in the database
-        /// </summary>
-        public void CombinethisPlayerWithStoredStats()
+        public double calculateBB()
+        {
+            return Math.Round(bigBlinds, 1);
+        }
+
+        //Combines the current dataset with the dataset in the database
+        public void combinethisPlayerWithStoredStats()
         {
             DBControls.CombineDataSets(this);
         }

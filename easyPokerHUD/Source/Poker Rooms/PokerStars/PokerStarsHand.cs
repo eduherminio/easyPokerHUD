@@ -8,30 +8,47 @@ namespace easyPokerHUD
     {
         public PokerStarsHand(string path)
         {
+            
             this.path = path;
             pokerRoom = "PokerStars";
 
-            //Read in the hand from the txt file
-            hand = GetHand(path, "SUMMARY", "");
+            try
+            {
+                //Read in the hand from the txt file
+                hand = getHand(path, "SUMMARY", "");
 
-            //Store the general information about the hand in separate strings
-            handInformation = hand[0];
-            tableInformation = hand[1];
+                //Store the general information about the hand in separate strings
+                handInformation = hand[0];
+                tableInformation = hand[1];
 
-            //Separate the hand into pieces
-            playerOverview = hand.SkipWhile(s => !s.Contains("chips")).TakeWhile(s => s.Contains("Seat ")).ToArray();
-            preflop = hand.SkipWhile(s => !s.Contains("HOLE CARDS")).TakeWhile(s => !s.Contains("FLOP")).ToArray();
-            postflop = hand.SkipWhile(s => !s.Contains("FLOP")).TakeWhile(s => !s.Contains("SHOW DOWN") || !s.Contains("SUMMARY")).ToArray();
+                //Separate the hand into pieces
+                playerOverview = hand.SkipWhile(s => !s.Contains("chips")).TakeWhile(s => s.Contains("Seat ")).ToArray();
+                preflop = hand.SkipWhile(s => !s.Contains("HOLE CARDS")).TakeWhile(s => !s.Contains("FLOP")).ToArray();
+                postflop = hand.SkipWhile(s => !s.Contains("FLOP")).TakeWhile(s => !s.Contains("SHOW DOWN") || !s.Contains("SUMMARY")).ToArray();
+                bigBlind = getBigBlind(hand.SkipWhile(s => !s.Contains("posts")).TakeWhile(s => !s.Contains("HOLE CARDS")).ToArray().Last());
 
-            //Get the table name and table size from the tableinformation string
-            tableName = GetTableName(tableInformation);
-            tableSize = GetTableSize(tableInformation);
+                //Get the table name and table size from the tableinformation string
+                tableName = getTableName(tableInformation);
+                tableSize = getTableSize(tableInformation);
 
-            //Get the players with stats playing in this hand
-            players = GetPlayersWithStats(playerOverview, preflop, postflop, pokerRoom);
+                //Get the players with stats playing in this hand
+                players = getPlayersWithStats(playerOverview, bigBlind, preflop, postflop, pokerRoom);
 
-            //Get the player name of this hand
-            playerName = GetPlayerName(hand);
+                //Get the player name of this hand
+                playerName = getPlayerName(hand);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (NotImplementedException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         /// <summary>
@@ -93,15 +110,8 @@ namespace easyPokerHUD
             return "0";
         }
 
-        /// <summary>
-        /// Creates a list of players
-        /// </summary>
-        /// <param name="playerOverview"></param>
-        /// <param name="preflop"></param>
-        /// <param name="postflop"></param>
-        /// <param name="pokerRoom"></param>
-        /// <returns></returns>
-        public static List<Player> GetPlayersWithStats(string[] playerOverview, string[] preflop, string[] postflop,
+        //Creates a list of players
+        public static List<Player> getPlayersWithStats(string[] playerOverview, int bigBlind, string[] preflop, string[] postflop,
              string pokerRoom)
         {
             //Create a list for all the players
@@ -118,8 +128,9 @@ namespace easyPokerHUD
                 players.Add(player);
             }
 
-            players = InsertPreFlopStats(preflop, players, "calls", "raises", "bets");
-            players = InsertPostFlopStats(postflop, players, "calls", "raises", "bets", "checks", "folds");
+            players = insertChipStats(playerOverview, bigBlind, players, " in chips");
+            players = insertPreFlopStats(preflop, players, "calls", "raises", "bets");
+            players = insertPostFlopStats(postflop, players, "calls", "raises", "bets", "checks", "folds");
             return players;
         }
 
@@ -145,6 +156,12 @@ namespace easyPokerHUD
             string resultString = Regex.Match(line, @"\d+").Value;
             int seatNumber = int.Parse(resultString);
             return seatNumber;
+        }
+
+        //Extracts the big blinds out of a given line
+        protected static int getBigBlind(String line)
+        {
+            return Int32.Parse(Regex.Match(line, @"\d+$").Value);
         }
     }
 }
