@@ -6,7 +6,12 @@ namespace easyPokerHUD
 {
     public partial class StatsWindow : UserControl
     {
-        public int seatNumber;
+        public int SeatNumber { get; set; }
+
+        private readonly Color _defaultColor = Color.GhostWhite;
+        private readonly Color _strongPlayerColor = Color.Red;
+        private readonly Color _mediumPlayerColor = Color.Orange;
+        private readonly Color _weakPlayerColor = Color.Green;
 
         public StatsWindow()
         {
@@ -22,6 +27,7 @@ namespace easyPokerHUD
             PopulateLabels(player);
 
             //handsplayed.Text = player.name + "  "+ player.seat; //This line is for debugging purposes only
+            Username.ForeColor = Color.GhostWhite;
 
             SetAFqColor();
             SetPFRColor();
@@ -34,12 +40,12 @@ namespace easyPokerHUD
         /// <param name="player"></param>
         private void PopulateLabels(Player player)
         {
+            Username.Text = $"{player.name} ({GetNumberOfHandsPlayedString(player.handsPlayed)})";
             //Set VPIP, PFR, AFq and handsPlayed
             int vpip = player.CalculateVPIP();
             int pfr = player.CalculatePFR();
             int afq = player.CalculateAFq();
-
-            handsplayed.Text = GetNumberOfHandsPlayedString(player.handsPlayed);
+            HandsPlayed.Text = GetNumberOfHandsPlayedString(player.handsPlayed);
             VPIP.Text = vpip.ToString();
             AFq.Text = afq.ToString();
 
@@ -78,19 +84,19 @@ namespace easyPokerHUD
             int vpip = Convert.ToInt16(VPIP.Text);
             if (vpip > 30)
             {
-                VPIP.ForeColor = Color.Green;
+                VPIP.ForeColor = _weakPlayerColor;
             }
             else if (vpip > 18)
             {
-                VPIP.ForeColor = Color.Orange;
+                VPIP.ForeColor = _mediumPlayerColor;
             }
             else if (vpip > 1)
             {
-                VPIP.ForeColor = Color.Red;
+                VPIP.ForeColor = _strongPlayerColor;
             }
             else
             {
-                VPIP.ForeColor = Color.GhostWhite;
+                VPIP.ForeColor = _defaultColor;
             }
         }
 
@@ -102,21 +108,21 @@ namespace easyPokerHUD
             int pfr = Convert.ToInt16(PFR.Text);
             int vpip = Convert.ToInt16(VPIP.Text);
 
-            if (pfr == 0)
+            if (pfr >= vpip * 0.8)
             {
-                PFR.ForeColor = Color.GhostWhite;
-            }
-            else if (pfr >= vpip * 0.8)
-            {
-                PFR.ForeColor = Color.Red;
+                PFR.ForeColor = _strongPlayerColor;
             }
             else if (pfr > vpip * 0.5)
             {
-                PFR.ForeColor = Color.Orange;
+                PFR.ForeColor = _mediumPlayerColor;
             }
             else if (pfr > 0)
             {
-                PFR.ForeColor = Color.Green;
+                PFR.ForeColor = _weakPlayerColor;
+            }
+            else
+            {
+                PFR.ForeColor = _defaultColor;
             }
         }
 
@@ -128,19 +134,29 @@ namespace easyPokerHUD
             int afq = Convert.ToInt16(AFq.Text);
             if (afq > 39)
             {
-                AFq.ForeColor = Color.Red;
+                AFq.ForeColor = _strongPlayerColor;
             }
             else if (afq > 24)
             {
-                AFq.ForeColor = Color.Orange;
+                AFq.ForeColor = _mediumPlayerColor;
             }
             else if (afq > 1)
             {
-                AFq.ForeColor = Color.Green;
+                AFq.ForeColor = _weakPlayerColor;
             }
             else
             {
-                AFq.ForeColor = Color.GhostWhite;
+                AFq.ForeColor = _defaultColor;
+            }
+        }
+
+        private void StatsWindow_SizeChanged(object sender, EventArgs e)
+        {
+            AutoScaleMode = AutoScaleMode.Dpi;
+
+            while (Username.Width < TextRenderer.MeasureText(Username.Text, new Font(Username.Font.FontFamily, Username.Font.Size, Username.Font.Style)).Width)
+            {
+                Username.Font = new Font(Username.Font.FontFamily, Username.Font.Size - 0.5f, Username.Font.Style);
             }
         }
     }

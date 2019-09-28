@@ -88,16 +88,16 @@ namespace easyPokerHUD
         protected void SetupStatsWindows()
         {
             //Set the seat numbers
-            statsWindow1.seatNumber = 1;
-            statsWindow2.seatNumber = 2;
-            statsWindow3.seatNumber = 3;
-            statsWindow4.seatNumber = 4;
-            statsWindow5.seatNumber = 5;
-            statsWindow6.seatNumber = 6;
-            statsWindow7.seatNumber = 7;
-            statsWindow8.seatNumber = 8;
-            statsWindow9.seatNumber = 9;
-            statsWindow10.seatNumber = 10;
+            statsWindow1.SeatNumber = 1;
+            statsWindow2.SeatNumber = 2;
+            statsWindow3.SeatNumber = 3;
+            statsWindow4.SeatNumber = 4;
+            statsWindow5.SeatNumber = 5;
+            statsWindow6.SeatNumber = 6;
+            statsWindow7.SeatNumber = 7;
+            statsWindow8.SeatNumber = 8;
+            statsWindow9.SeatNumber = 9;
+            statsWindow10.SeatNumber = 10;
 
             //Add all the statswindows to the list
             statsWindowList.Add(statsWindow1);
@@ -116,6 +116,7 @@ namespace easyPokerHUD
             {
                 Controls.Add(statsWindow);
                 statsWindow.Visible = false;
+                statsWindow.tableLayoutPanel1.AutoSize = true;
             }
         }
 
@@ -126,14 +127,19 @@ namespace easyPokerHUD
         {
             float fontSize = Width / 99 / GetScalingFactor();
             float fontSizeForWindow = (float)Width / 120;
-            foreach (StatsWindow statsWindow in statsWindowList)
+
+            using (FontFamily fontFamily = new FontFamily("Arial"))
             {
-                statsWindow.Font = new Font("Arial", fontSizeForWindow);
-                Font fontForTheStats = new Font("Arial", fontSize + 2, FontStyle.Bold);
-                statsWindow.VPIP.Font = fontForTheStats;
-                statsWindow.PFR.Font = fontForTheStats;
-                statsWindow.AFq.Font = fontForTheStats;
-                statsWindow.handsplayed.Font = new Font("Arial", fontSize + 2, FontStyle.Regular);
+                foreach (StatsWindow statsWindow in statsWindowList)
+                {
+                    statsWindow.Font = new Font(fontFamily, fontSizeForWindow);
+                    Font fontForTheStats = new Font(fontFamily, fontSize, FontStyle.Bold);
+
+                    statsWindow.VPIP.Font = fontForTheStats;
+                    statsWindow.PFR.Font = fontForTheStats;
+                    statsWindow.AFq.Font = fontForTheStats;
+                    statsWindow.Username.Font = fontForTheStats;
+                }
             }
         }
 
@@ -148,10 +154,11 @@ namespace easyPokerHUD
             int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
             int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
             int logpixelsy = GetDeviceCaps(desktop, (int)DeviceCap.LOGPIXELSY);
-            float screenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
-            float dpiScalingFactor = (float)logpixelsy / (float)96;
+            float screenScalingFactor = (float)PhysicalScreenHeight / LogicalScreenHeight;
+            float dpiScalingFactor = (float)logpixelsy / 96;
 
             return dpiScalingFactor; // 1.25 = 125%
+            //return screenScalingFactor;
         }
 
         /// <summary>
@@ -185,28 +192,16 @@ namespace easyPokerHUD
             {
                 try
                 {
-                    var playerForThisSeat = players.Single(p => p.seat == statsWindow.seatNumber);
+                    var playerForThisSeat = players.Single(p => p.seat == statsWindow.SeatNumber);
                     statsWindow.PopulateStatsWindow(playerForThisSeat);
                     statsWindow.Visible = true;
                 }
-                catch
+                catch (Exception)
                 {
+                    Console.Out.WriteLine("Hiding HUD for Seat " + statsWindow.SeatNumber);
                     statsWindow.Visible = false;
                 }
             }
-        }
-
-        private void InitializeComponent()
-        {
-            SuspendLayout();
-            //
-            // PokerRoomOverlay
-            //
-            AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(278, 244);
-            Name = "PokerRoomOverlay";
-            ResumeLayout(false);
         }
     }
 }

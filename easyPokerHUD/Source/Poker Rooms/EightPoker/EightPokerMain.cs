@@ -42,7 +42,7 @@ namespace easyPokerHUD
 
             //Create a new hand and check if it is valid to be displayed
             EightPokerHand hand = new EightPokerHand(e.FullPath);
-            if (CheckIfHandIsValidForHUD(hand.tableSize, hand.tableInformation, hand.players, hand.playerName))
+            if (CheckIfHandIsValidForHUD(hand.tableSize, hand.players, hand.playerName))
             {
                 CombineDataSets(hand.players);
                 CreateNewOverlayOrStoreInformation(hand);
@@ -108,11 +108,10 @@ namespace easyPokerHUD
         /// Checks whether this hand is eligible to be hudded
         /// </summary>
         /// <param name="tableSize"></param>
-        /// <param name="handInformation"></param>
         /// <param name="players"></param>
         /// <param name="playerName"></param>
         /// <returns></returns>
-        protected static bool CheckIfHandIsValidForHUD(int tableSize, string handInformation, List<Player> players, string playerName)
+        protected static bool CheckIfHandIsValidForHUD(int tableSize, List<Player> players, string playerName)
         {
             //If the player is sitting out, the playerName will return empty
             if (string.IsNullOrEmpty(playerName))
