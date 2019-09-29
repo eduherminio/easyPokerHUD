@@ -97,7 +97,7 @@ namespace easyPokerHUD
                     {
                         player.seat += 3;
                     }
-                    player.seat++;
+                    ++player.seat;
                 }
             }
             return players;
@@ -115,13 +115,13 @@ namespace easyPokerHUD
                     }
                     if (player.seat == 7)
                     {
-                        player.seat++;
+                        ++player.seat;
                     }
                     if (player.seat == 9)
                     {
                         player.seat = 0;
                     }
-                    player.seat++;
+                    ++player.seat;
                 }
             }
             return players;
@@ -135,13 +135,13 @@ namespace easyPokerHUD
                 {
                     if (player.seat == 2 || player.seat == 4 || player.seat == 7)
                     {
-                        player.seat++;
+                        ++player.seat;
                     }
                     if (player.seat == 9)
                     {
                         player.seat = 0;
                     }
-                    player.seat++;
+                    ++player.seat;
                 }
             }
             return players;
@@ -155,13 +155,13 @@ namespace easyPokerHUD
                 {
                     if (player.seat == 7)
                     {
-                        player.seat++;
+                        ++player.seat;
                     }
                     if (player.seat == 10)
                     {
                         player.seat = 0;
                     }
-                    player.seat++;
+                    ++player.seat;
                 }
             }
             return players;
@@ -177,7 +177,7 @@ namespace easyPokerHUD
                     {
                         player.seat = 0;
                     }
-                    player.seat++;
+                    ++player.seat;
                 }
             }
             return players;
@@ -205,53 +205,53 @@ namespace easyPokerHUD
 
         private void PositionControlsHeadsUp()
         {
-            statsWindow4.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 2.5), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow9.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.65), Convert.ToInt32(Convert.ToDouble(Height / 8.5)));
+            statsWindow4.Location = new Point(Convert.ToInt32(Width / 2.50), Convert.ToInt32(Height / 1.305));
+            statsWindow9.Location = new Point(Convert.ToInt32(Width / 1.65), Convert.ToInt32(Height / 8.500));
         }
 
         private void PositionControls4Max()
         {
-            statsWindow1.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.24), Convert.ToInt32(Convert.ToDouble(Height / 2.05)));
-            statsWindow4.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 2.5), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow7.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 35.0), Convert.ToInt32(Convert.ToDouble(Height / 2.05)));
-            statsWindow9.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.65), Convert.ToInt32(Convert.ToDouble(Height / 8.5)));
+            statsWindow1.Location = new Point(Convert.ToInt32(Width / 1.24), Convert.ToInt32(Height / 2.05));
+            statsWindow4.Location = new Point(Convert.ToInt32(Width / 2.50), Convert.ToInt32(Height / 1.305));
+            statsWindow7.Location = new Point(Convert.ToInt32(Width / 35.0), Convert.ToInt32(Height / 2.05));
+            statsWindow9.Location = new Point(Convert.ToInt32(Width / 1.65), Convert.ToInt32(Height / 8.50));
         }
 
         private void PositionControls6Max()
         {
-            statsWindow1.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.34), Convert.ToInt32(Convert.ToDouble(Height / 7.5)));
-            statsWindow2.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.24), Convert.ToInt32(Convert.ToDouble(Height / 2.05)));
-            statsWindow4.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.82), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow6.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 3.9), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow7.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 35.0), Convert.ToInt32(Convert.ToDouble(Height / 2.05)));
-            statsWindow9.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 13.0), Convert.ToInt32(Convert.ToDouble(Height / 7.5)));
+            statsWindow1.Location = new Point(Convert.ToInt32(Width / 1.34), Convert.ToInt32(Height / 7.50));
+            statsWindow2.Location = new Point(Convert.ToInt32(Width / 1.24), Convert.ToInt32(Height / 2.05));
+            statsWindow4.Location = new Point(Convert.ToInt32(Width / 1.82), Convert.ToInt32(Height / 1.305));
+            statsWindow6.Location = new Point(Convert.ToInt32(Width / 3.90), Convert.ToInt32(Height / 1.305));
+            statsWindow7.Location = new Point(Convert.ToInt32(Width / 35.0), Convert.ToInt32(Height / 2.05));
+            statsWindow9.Location = new Point(Convert.ToInt32(Width / 13.0), Convert.ToInt32(Height / 7.50));
         }
 
         private void PositionControls9Max()
         {
-            statsWindow1.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.37), Convert.ToInt32(Convert.ToDouble(Height / 7.5)));
-            statsWindow2.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.24), Convert.ToInt32(Convert.ToDouble(Height / 2.7)));
-            statsWindow3.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.24), Convert.ToInt32(Convert.ToDouble(Height / 1.79)));
-            statsWindow4.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.6), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow5.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 2.47), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow6.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 5.5), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow7.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 35.0), Convert.ToInt32(Convert.ToDouble(Height / 1.79)));
-            statsWindow9.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 35.0), Convert.ToInt32(Convert.ToDouble(Height / 2.7)));
-            statsWindow10.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 13), Convert.ToInt32(Convert.ToDouble(Height / 7.5)));
+            statsWindow1.Location = new Point(Convert.ToInt32(Width / 1.37), Convert.ToInt32(Height / 7.500));
+            statsWindow2.Location = new Point(Convert.ToInt32(Width / 1.24), Convert.ToInt32(Height / 2.700));
+            statsWindow3.Location = new Point(Convert.ToInt32(Width / 1.24), Convert.ToInt32(Height / 1.790));
+            statsWindow4.Location = new Point(Convert.ToInt32(Width / 1.60), Convert.ToInt32(Height / 1.305));
+            statsWindow5.Location = new Point(Convert.ToInt32(Width / 2.47), Convert.ToInt32(Height / 1.305));
+            statsWindow6.Location = new Point(Convert.ToInt32(Width / 5.50), Convert.ToInt32(Height / 1.305));
+            statsWindow7.Location = new Point(Convert.ToInt32(Width / 35.0), Convert.ToInt32(Height / 1.790));
+            statsWindow9.Location = new Point(Convert.ToInt32(Width / 35.0), Convert.ToInt32(Height / 2.700));
+            statsWindow10.Location = new Point(Convert.ToInt32(Width / 13.0), Convert.ToInt32(Height / 7.50));
         }
 
         private void PositionControls10Max()
         {
-            statsWindow1.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.6), Convert.ToInt32(Convert.ToDouble(Height / 24)));
-            statsWindow2.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.24), Convert.ToInt32(Convert.ToDouble(Height / 2.7)));
-            statsWindow3.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.24), Convert.ToInt32(Convert.ToDouble(Height / 1.79)));
-            statsWindow4.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 1.6), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow5.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 2.47), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow6.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 5.5), Convert.ToInt32(Convert.ToDouble(Height / 1.305)));
-            statsWindow7.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 35.0), Convert.ToInt32(Convert.ToDouble(Height / 1.79)));
-            statsWindow8.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 35.0), Convert.ToInt32(Convert.ToDouble(Height / 2.7)));
-            statsWindow9.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 5.5), Convert.ToInt32(Convert.ToDouble(Height / 24)));
-            statsWindow10.Location = new Point(Convert.ToInt32(Convert.ToDouble(Width) / 2.47), Convert.ToInt32(Convert.ToDouble(Height / 24)));
+            statsWindow1.Location = new Point(Convert.ToInt32(Width / 1.60), Convert.ToInt32(Height / 24.00));
+            statsWindow2.Location = new Point(Convert.ToInt32(Width / 1.24), Convert.ToInt32(Height / 2.700));
+            statsWindow3.Location = new Point(Convert.ToInt32(Width / 1.24), Convert.ToInt32(Height / 1.790));
+            statsWindow4.Location = new Point(Convert.ToInt32(Width / 1.60), Convert.ToInt32(Height / 1.305));
+            statsWindow5.Location = new Point(Convert.ToInt32(Width / 2.47), Convert.ToInt32(Height / 1.305));
+            statsWindow6.Location = new Point(Convert.ToInt32(Width / 5.50), Convert.ToInt32(Height / 1.305));
+            statsWindow7.Location = new Point(Convert.ToInt32(Width / 35.0), Convert.ToInt32(Height / 1.790));
+            statsWindow8.Location = new Point(Convert.ToInt32(Width / 35.0), Convert.ToInt32(Height / 2.700));
+            statsWindow9.Location = new Point(Convert.ToInt32(Width / 5.50), Convert.ToInt32(Height / 24.00));
+            statsWindow10.Location = new Point(Convert.ToInt32(Width / 2.47), Convert.ToInt32(Height / 24.0));
         }
     }
 }

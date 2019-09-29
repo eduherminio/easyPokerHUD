@@ -116,7 +116,7 @@ namespace easyPokerHUD
             {
                 Controls.Add(statsWindow);
                 statsWindow.Visible = false;
-                statsWindow.tableLayoutPanel1.AutoSize = true;
+                statsWindow.TableLayoutPanel.AutoSize = true;
             }
         }
 

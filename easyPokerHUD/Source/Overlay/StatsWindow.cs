@@ -45,7 +45,7 @@ namespace easyPokerHUD
             int vpip = player.CalculateVPIP();
             int pfr = player.CalculatePFR();
             int afq = player.CalculateAFq();
-            HandsPlayed.Text = GetNumberOfHandsPlayedString(player.handsPlayed);
+            HandsPlayed.Text = $"({GetNumberOfHandsPlayedString(player.handsPlayed)})";
             VPIP.Text = vpip.ToString();
             AFq.Text = afq.ToString();
 

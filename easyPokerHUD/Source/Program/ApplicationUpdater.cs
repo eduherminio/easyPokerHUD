@@ -33,7 +33,10 @@ namespace easyPokerHUD
         {
             try
             {
-                return new WebClient().DownloadString(_updateInformationURL);
+                using (WebClient webClient = new WebClient())
+                {
+                    return webClient.DownloadString(_updateInformationURL);
+                }
             }
             catch
             {
