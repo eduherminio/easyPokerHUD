@@ -1,0 +1,31 @@
+name: CI GitHub Actions
+
+on:
+  push:
+    branches:
+    - master
+    - dev
+  pull_request:
+    branches:
+    - master
+    - dev
+  schedule:
+    - cron:  '* * * * 1'
+
+jobs:
+  build-windows:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2016, windows-2019]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 4.6.1
+    - name: Compile and publish project
+      run: msbuild easyPokerHUD.csproj /t:Clean;Build;Publish /p:Configuration=Release
