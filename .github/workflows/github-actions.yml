@@ -24,4 +24,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Compile and publish project
-      run: ./ci/build.bat
+      run: ci/build.bat
