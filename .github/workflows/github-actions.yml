@@ -24,4 +24,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Compile and publish project
-      run: build.bat
+      run: ""C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe"" easyPokerHUD.csproj /t:Clean;Build;Publish /p:Configuration=Release
